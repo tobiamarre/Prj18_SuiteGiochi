@@ -44,12 +44,9 @@ public class WordleCtrl {
 		}
 		
 		// lettere gialle
-//		System.out.println("rimuovo le verdi:");
-//		System.out.println(tentativo);
 		tentativo.removeAll(tentativoColorato);
 		soluzione.removeAll(tentativoColorato);
-//		System.out.println(tentativo);
-//		System.out.println("--------------------");
+
 		for (Lettera letteraSoluzione : soluzione) {
 			for (Lettera letteraTentativo : tentativo) {
 				if (letteraSoluzione.carattere.equals(letteraTentativo.carattere) ) {

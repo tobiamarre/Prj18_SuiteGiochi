@@ -30,20 +30,23 @@ public class SudokuTest {
 		);
 		
 		
-		SudokuSolver l = new LexicographicSolver();
-		SudokuSolver il = new InverseLexicographicSolver();
-		SudokuSolver r = new RandomSolver();
+		LexicographicSolver l = new LexicographicSolver();
+		LexicographicSolver il = new InverseLexicographicSolver();
+		LexicographicSolver r = new RandomSolver();
 //		l.setProblem(m);
 //		il.setProblem(m);
 //		r.setProblem(m);
 //		
 		long start = System.nanoTime();
 		for (int i = 0; i < 1_000_000; i++) {
-//			il.getSolution();
-//			l.getSolution();
 			r.getSolution();
+			
+			
 		}
-		System.out.println((double)(System.nanoTime() - start) / 1000000000);
+		System.out.println((double)(System.nanoTime() - start)/1_000_000_000);
+		
+		System.out.println(r.getSolution());
+		
 		
 //		GENERA GRIGLIE RISOLTE
 		
