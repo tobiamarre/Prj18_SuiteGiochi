@@ -1,0 +1,26 @@
+div.selectedCell {
+	background: chartreuse;
+	color: black;
+}
+
+div.cellaFissa {
+	font-weight: bold;
+	background: aliceblue;
+	color: black;
+}
+div.cellaPiena {
+	background: aliceblue;
+	color: black;
+}
+
+div.selectedDigit {
+	background: chartreuse;
+	color: black;
+}
+
+
+div.mistakenCell {
+	background: lightcoral;
+	color: black;	
+}
+
