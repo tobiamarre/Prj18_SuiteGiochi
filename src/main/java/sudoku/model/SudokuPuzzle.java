@@ -21,6 +21,8 @@ public class SudokuPuzzle {
 	public SudokuModel getProblem() {
 		return problem;
 	}
-	
+	public SudokuModel getSolution() {
+		return solution;
+	}	
 	
 }

@@ -13,79 +13,31 @@ public class LexicographicSolver extends SudokuSolver {
 	
 	// cifra/digit:		numero da 0 a 9 presente nell'array del model (0 per le celle vuote)
 	
-	// position:		indice nell'array del solver. Si ricava dalla cella corrispondente
-	//					rende più veloce il calcolo di colonna blocco e riga
-	
 	// value:			potenza di due compresa fra 1 e 2^8, oppure 0. corrisponde alle cifre del model
 	//					0 --> 0; 1 ... 9 --> 2^0 ... 2^8
 	
 	// annotazione:		intero con 9 bit significativi. Ciascun bit indica la disponibilità 
 	//					del corrispondente value in una data cella. Bit acceso corrisponde a value non disponibile
 	
-	// colonne:			0000 -> 1ª colonna; 				
-	//					0001 -> 2ª colonna; 
-	//					0010 -> 3ª colonna; (0011 si salta);
-	//					0100 -> 4ª colonna;  
-	//					0101 -> 5ª colonna; 
-	//					0110 -> 6ª colonna; (0111 si salta);
-	//					1000 -> 7ª colonna; 	
-	//					1001 -> 8ª colonna; 
-	//					1010 -> 9ª colonna.
-	
-	// blocchi:			enumerandoli da sinistra a destra e poi dall'alto verso il basso:
-	//					0000 -> 1º blocco; 					
-	//					0001 -> 2º blocco; 	
-	//					0010 -> 3º blocco; (0011 si salta);
-	//					0100 -> 4º blocco;  		
-	//					0101 -> 5º blocco; 	
-	//					0110 -> 6º blocco; (0111 si salta);	
-	//					1000 -> 7º blocco; 
-	//					1001 -> 8º blocco; 	
-	//					1010 -> 9º blocco.
-	
-	// righe:			0000 -> 1ª riga;	 				
-	//					0001 -> 2ª riga;    
-	//					0010 -> 3ª riga; (0011 si salta);   
-	//					0100 -> 4ª riga; 	
-	//					0101 -> 5ª riga;    
-	//					0110 -> 6ª riga; (0111 si salta);   
-	//					1000 -> 7ª riga;	
-	//					1001 -> 8ª riga;    
-	//					1010 -> 9ª riga.
-	
-	// in questa maniera si può formare la position di 8bit 
-	// concatenando i 4bit dell'indice di riga e i 4bit dell'indice di colonna
-	
-	// così l'indice di riga si legge sui primi 4 bit
-	// l'indice di colonna sugli ultimi 4
-	// e l'indice di blocco può leggere nei 4bit intermedi (si sovrappone a quelli di riga e colonna)
-	
-	// l'array su cui scriviamo la soluzione viene lungo 171 (90 slot vanno sprecati
-	// ma ricavare gli indici di colonna blocco e riga risulta molto più economico)
-	// praticamente lavoriamo come se avessimo 16 righe e 16 colonne
-	
 	protected SudokuModel solution;
 	protected Boolean hasSolution;
 
-	protected SimpleStack celleVuote;		// position delle celle da riempire. L'ordine determina la soluzione trovata
+	protected SimpleStack celleVuote;		
 	protected SimpleStack celleRiempite;
-	protected int[] matrix;							// array sul quale viene scritta la soluzione 
-													// ciascuna position contiene un value. (in realtà per opportunità computazionale
-													// l'array è più grande di quello del model, alcuni byte vengono sprecati)
-	
-	// ogni volta che aggiungiamo una cifra alla griglia (più precisamente, scriviamo un value su matrix)
+	protected int[] matrix;							
+	// ogni volta che aggiungiamo una cifra alla griglia
 	// andiamo a segnare il value su annotazioniColonne, annotazioniBlocchi e annotazioniRighe,
-	// agli indici corrispondenti alla position su cui abbiamo scritto
+	// agli indici corrispondenti alla cella su cui abbiamo scritto
 	
-	// quindi annotazioniColonne/Blocchi/Righe contiene i value non disponibili perché già presenti
-	// nella sezione cui appartiene la position
+	// quindi annotazioniColonne/Blocchi/Righe contengono i value non disponibili perché già presenti
+	// nella sezione cui appartiene la cella
 	
-	// i valori di questi tre array sono determinati esclusivamente dai value presenti nella matrix
+	// i valori di questi tre array sono determinati esclusivamente dai value presenti in matrix
 	
-	// annotazioniPosition invece conserva i value che possiamo 
+	// annotazioniCelle invece conserva i value che possiamo 
 	// escludere perché li abbiamo provati e recano a configurazioni non risolvibili, e andremo a compilarlo
-	// man mano che traversiamo l'albero dei riempimenti possibili della griglia. Col procedere 
-	// dell'algoritmo annotazioniPosition conterrà sempre più value quand'anche dovessimo tornare alla stessa
+	// man mano che traversiamo l'albero dei possibili riempimenti della griglia. Col procedere 
+	// dell'algoritmo annotazioniCelle conterrà sempre più value quand'anche dovessimo tornare alla stessa
 	// configurazione di matrix
 	
 	protected int[] annotazioniColonne;		
@@ -133,9 +85,9 @@ public class LexicographicSolver extends SudokuSolver {
 		while (celleVuote.size() > 0) {
 			int cella = celleVuote.pop();
 			
-			// cerchiamo di riempire la cella identificata da position
+			// cerchiamo di riempire la cella
 			// ne calcoliamo l'annotazione corrispondente unendo i value esclusi perché già presenti
-			// sulla stessa riga/colonna/blocco (annotazioniColonna etc)
+			// sulla stessa riga/colonna/blocco
 			int colonna = colonna(cella);
 			int blocco = blocco(cella);
 			int riga = riga(cella);
@@ -143,8 +95,7 @@ public class LexicographicSolver extends SudokuSolver {
 					annotazioniColonne[colonna] | 
 					annotazioniBlocchi[blocco] | 
 					annotazioniRighe[riga] |
-					// annotazioniPosition: abbiamo già tentato queste strade, e siamo dovuti tornare indietro
-					// meglio evitare di ripetere gli stessi errori
+					// annotazioniCelle: abbiamo già tentato queste strade, e siamo dovuti tornare indietro
 					annotazioniCelle[cella];
 			
 			if (annotazione == 511) {
@@ -165,12 +116,12 @@ public class LexicographicSolver extends SudokuSolver {
 				annotazioniBlocchi[blocco(cellaPrec)] ^= ValuePrec;
 				annotazioniRighe[riga(cellaPrec)] ^= ValuePrec;
 				
-				// l'annotazionePosition (i value già tentati) della cella che stavamo cercando di riempire perde di significato, 
-				// dal momento che cambieremo pendingPosition, che sta nella parte di matrix che la precede (nell'ordine di riempimento)
+				// l'annotazioneCelle (i value già tentati) della cella che stavamo cercando di riempire perde di significato, 
+				// dal momento che cambieremo cellaPrec, che sta nella parte di matrix che la precede (nell'ordine di riempimento)
 				annotazioniCelle[cella] = 0;
 				
 				// cancelliamo il value che avevamo scritto
-				// matrix[prevPosition] = 0;	(in realtà non è necessario farlo davvero: se esiste una soluzione ci scriveremo sopra un altro valore comunque; mentre se non esiste una soluzione non ha importanza cosa ci resta scritto)
+				// matrix[cellaPrec] = 0;	(in realtà non è necessario farlo davvero: se esiste una soluzione ci scriveremo sopra un altro valore comunque; mentre se non esiste una soluzione non ha importanza cosa ci resta scritto)
 				
 				// reinseriamo le due celle nella stack di quelle da riempire (nello stesso ordine in cui le abbiamo trovate)
 				celleVuote.add(cella);
@@ -179,7 +130,7 @@ public class LexicographicSolver extends SudokuSolver {
 			else {
 				// riempiamo la cella dandole la cifra più piccola fra quelle disponibili
 				// (corrispondente al bit OFF meno significativo presente nell'annotazione)
-				int value = primoValueDisponibile[annotazione];
+				int value = unValueAmmissibile(annotazione);
 				matrix[cella] = value;
 				
 				// segniamo sulla sua colonna/riga/blocco
@@ -254,16 +205,16 @@ public class LexicographicSolver extends SudokuSolver {
 		return cella / 9; 
 	}
 	
-	static int primoValueDisponibile(int annotazione) { // bit OFF meno significativo (troncato a 9 bit)
-		return annotazione+1 & ~annotazione & 511;
+	int unValueAmmissibile(int annotazione) { // bit OFF meno significativo 
+		return annotazione+1 & ~annotazione;
 	}
-	int[] primoValueDisponibile;
-	{
-		primoValueDisponibile = new int[512];
-		for (int annotazione = 0; annotazione < 512; annotazione++) {
-			primoValueDisponibile[annotazione] = primoValueDisponibile(annotazione);
-		}
-	}
+//	int[] primoValueDisponibile;
+//	{
+//		primoValueDisponibile = new int[512];
+//		for (int annotazione = 0; annotazione < 512; annotazione++) {
+//			primoValueDisponibile[annotazione] = primoValueDisponibile(annotazione);
+//		}
+//	}
 	
 	
 	

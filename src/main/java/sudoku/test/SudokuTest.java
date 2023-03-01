@@ -38,14 +38,14 @@ public class SudokuTest {
 //		r.setProblem(m);
 //		
 		long start = System.nanoTime();
-		for (int i = 0; i < 1_000_000; i++) {
-			r.getSolution();
+		for (int i = 0; i < 1000000; i++) {
+			l.getSolution();
 			
 			
 		}
 		System.out.println((double)(System.nanoTime() - start)/1_000_000_000);
 		
-		System.out.println(r.getSolution());
+		System.out.println(l.getSolution());
 		
 		
 //		GENERA GRIGLIE RISOLTE

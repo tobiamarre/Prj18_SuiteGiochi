@@ -1,4 +1,6 @@
 <%@page import="sudoku.model.SudokuPuzzle"%>
+<style><%@include file="/css/styleSudoku.css"%></style>
+
 <div class="wrapper">
         <header>
             <h1><%= request.getAttribute("title") %></h1>
@@ -9,7 +11,7 @@
                 <div class="cell">
 
 			<% for (int i : ((SudokuPuzzle)request.getAttribute("puzzle")).getProblem().getMatrice()) { %>
-					<div><%= i == 0 ? "" : Integer.toString(i) %></div>
+					<%= i == 0 ? "<div>" : "<div class=\"cellaFissa\">" + Integer.toString(i) %></div>
 			<% } %>
                     
 
@@ -29,8 +31,14 @@
 
 
 
-
-			<% // numeri = (Integer[]) request.getAttribute("listaNumeri"); %>
+<script type='text/javascript'>
+var solution = [<% for (int digit : ((SudokuPuzzle)request.getAttribute("puzzle")).getSolution().getMatrice()) { %>
+   
+  				 <%="'" + digit + "',"%> 
+   
+				<%}%>
+];
+</script>
 
 
 <script src="js/viewSudoku.js"></script>

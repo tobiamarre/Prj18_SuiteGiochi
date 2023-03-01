@@ -1,17 +1,57 @@
 /**
  * 
  */
+//window.addEventListener('DOMContentLoaded', () => {
 
 var celle = [...document.querySelectorAll(".wrapper>.cell>div")];
 
-var cellaSelected = null;
+var selectedCell = null;
+var selectedDigit = null;
 
-function setCellaSelected(c) {
-	celle.forEach(oc => oc.style.backGroundColor = '');
-	cellaSelected=c;
+function setSelectedCell(c) {
 	
+	if (c.textContent != '') {
+		setSelectedDigit(c.textContent);
+	}
 	
-	celle.filter(oc=>oc.textContent==cellaSelected.textContent).forEach(oc=>oc.style.backGroundColor = 'rgb(0,200,0)');
+	if (selectedCell != null) {
+		selectedCell.classList.remove('selectedCell');
+		c.classList.add("selectedCell");
+	}
+
+	selectedCell = c;
+}
+
+function setSelectedDigit(d) {
+	selectedDigit = d;
+	refreshCelle();
+}
+function refreshCelle() {
+	celle.forEach(c => {
+		c.classList.remove('selectedDigit');
+		c.classList.remove('cellaPiena');
+		c.classList.remove('mistakenCell');		
+	});
+	
+	if (selectedDigit != '') {
+		celle.filter(c => c.textContent == selectedDigit).forEach(c => c.classList.toggle('selectedDigit'));
+	}
+	
+	celle.filter(c => c.textContent != '').forEach(c => c.classList.add('cellaPiena'))
+	
+	celle.
+		filter((c, i) => c.textContent != '' && c.textContent != solution[i]).
+		forEach(c => c.classList.add('mistakenCell'));
+	
+}
+
+function checkSolution() {
+	celle.forEach((c, i) => {
+		if (c.textContent != '' && c.textContent != solution[i]) {
+			c.classList.add('mistakenCell');
+		}
+		else (c.classList.remove('mistakenCell'));
+	});
 }
  
 function cella(i, j){
@@ -34,17 +74,36 @@ function colonna(j) {
 	return out;
 }
  
-celle.forEach((cell, i) => {
+celle.forEach(cell => {
 	
 	cell.onclick = function(){
-		setCellaSelected(this); 
+
+		setSelectedCell(this);
+		if (this.textContent != '') {
+			setSelectedDigit(this.textContent);
+		}
+		else if (selectedDigit == this.textContent) {
+			setSelectedDigit(null);
+		}
 		
 	} 
  });
  
  
 document.addEventListener('keydown', (event) => {
-    if (cellaSelected != null && event.key.match(/[1-9]$/)) {
-		cellaSelected.textContent = event.key;
-	}
+
+    if (selectedCell != null && !selectedCell.classList.contains("cellaFissa")) {
+		if (event.key.match(/^[1-9]$/)) {
+			selectedCell.textContent = event.key;
+			refreshCelle();
+		}
+		else if (event.key == 'Backspace') {
+			selectedCell.textContent = '';
+			refreshCelle();
+		}		
+	} 
 });
+
+
+
+//});
