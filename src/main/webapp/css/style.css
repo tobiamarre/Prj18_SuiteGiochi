@@ -17,7 +17,7 @@
 
         /* Griglia */
 
-        .cell {
+        /* .cell {
             font-size: calc(1vw + 6px);
             color: #333;
             display: grid;
@@ -26,14 +26,14 @@
             border-right: 1px solid grey;
             border-bottom: 1px solid grey;
 
-        }
+        } */
 
-        /* Griglia small */
+        /* Griglia small
         .cell-sm {
             font-size: calc(.3vw + 6px);
             grid-template-columns: repeat(9, 1.5vw);
             grid-template-rows: repeat(9, 1.5vw);
-        }
+        } */
 
         /* fine Griglia */
 

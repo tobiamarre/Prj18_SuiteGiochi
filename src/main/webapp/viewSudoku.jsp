@@ -32,12 +32,7 @@
 
 
 <script type='text/javascript'>
-var solution = [<% for (int digit : ((SudokuPuzzle)request.getAttribute("puzzle")).getSolution().getMatrice()) { %>
-   
-  				 <%="'" + digit + "',"%> 
-   
-				<%}%>
-];
+var solution = [<% for (int digit : ((SudokuPuzzle)request.getAttribute("puzzle")).getSolution().getMatrice()) {%><%="'" + digit + "',"%><%}%>];
 </script>
 
 

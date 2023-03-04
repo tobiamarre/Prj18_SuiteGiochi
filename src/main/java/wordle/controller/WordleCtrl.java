@@ -29,17 +29,10 @@ public class WordleCtrl {
 		
 		
 		// lettere verdi
-//		for (Lettera lettera : tentativo) {	<---- NON FUNZIONA MA IN TEORIA DOVREBBE (???)
-//			if (soluzione.contains(lettera)) {	
-//				lettera.colore = VERDE;
-//				tentativoColorato.add(lettera);
-//			}
-//		}
-		for (int i = 0; i < tentativo.size(); i++) {
-			if (tentativo.get(i).equals(soluzione.get(i))) {
-				
-				tentativo.get(i).colore = VERDE;
-				tentativoColorato.add(tentativo.get(i));
+		for (Lettera lettera : tentativo) {
+			if (soluzione.contains(lettera)) {	
+				lettera.colore = VERDE;
+				tentativoColorato.add(lettera);
 			}
 		}
 		
@@ -90,6 +83,5 @@ public class WordleCtrl {
 			}
 		}
 		
-		System.out.println(Objects.equals(new Lettera("b", 1, 0), new Lettera("a", 0, 0)));
 	}
 }

@@ -3,12 +3,7 @@ package sudoku.controller;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Queue;
-import java.util.Stack;
-
-import org.apache.tomcat.util.digester.ArrayStack;
-import org.eclipse.jdt.internal.compiler.lookup.ProblemBinding;
 
 import sudoku.model.SudokuModel;
 import sudoku.model.SudokuPuzzle;
@@ -84,17 +79,6 @@ public class SudokuGenerator {
 	
 	SudokuModel solution;
 	SudokuModel problem;
-	SudokuModel hardestProblem;
-	Stack<SudokuModel> nodes;
-	private void initReduction() {
-		solution = new RandomSolver().getSolution();
-		problem = solution.clone();
-		nodes = new Stack<>();
-		nodes.push(problem);
-	}
-	
-
-
 
 	public SudokuPuzzle getPuzzle() {
 		if (problem == null) {

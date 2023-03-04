@@ -2,7 +2,6 @@ package sudoku.controller;
 
 import java.util.Random;
 
-import sudoku.model.SimpleStack;
 import sudoku.model.SudokuModel;
 
 public class RandomSolver extends LexicographicSolver {
@@ -21,13 +20,9 @@ public class RandomSolver extends LexicographicSolver {
 	int unValueAmmissibile(int annotazione) {
 		int randomShift = r.nextInt(9);
 		int value = annotazione * 0b1000000001 >> randomShift;
-		value = value+1 & ~value & (0x3ffff >> randomShift);
-		value <<= randomShift;
-		
-		if (value > 256) {
-			value >>= 9;
-		}	
-		return value;
+		value = value+1 & ~value;
+
+		return ((value << randomShift) * 0b1000000001 >> 9) & 511;
 	}
 
 

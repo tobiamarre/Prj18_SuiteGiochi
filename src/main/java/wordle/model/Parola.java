@@ -24,11 +24,6 @@ public class Parola implements Collection<Lettera>{
 		lettere = new TreeSet<>();
 	}
 	
-
-	public Lettera get(int pos) {
-		return lettere.ceiling(new Lettera("", 0, pos));
-	}
-	
 	
 	public String toString() {
 		String out = "";

@@ -3,6 +3,36 @@
  */
 //window.addEventListener('DOMContentLoaded', () => {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var celle = [...document.querySelectorAll(".wrapper>.cell>div")];
 
 var selectedCell = null;

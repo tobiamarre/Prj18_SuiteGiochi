@@ -1,6 +1,5 @@
 package sudoku.controller;
 
-import java.util.ArrayList;
 
 import sudoku.model.SimpleStack;
 import sudoku.model.SudokuModel;

@@ -40,7 +40,11 @@ public class Lettera implements Comparable<Lettera> {
 	}
 	@Override
 	public int compareTo(Lettera o) {
-		return this.posizione - o.posizione;
+		int diffPosiz = this.posizione - o.posizione;
+		if (diffPosiz != 0) {
+			return diffPosiz;
+		}
+		return this.carattere.charAt(0) - o.carattere.charAt(0);
 	}
 	@Override
 	public int hashCode() {

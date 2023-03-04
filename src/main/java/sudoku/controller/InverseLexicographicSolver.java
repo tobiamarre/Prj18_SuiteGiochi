@@ -1,6 +1,5 @@
 package sudoku.controller;
 
-import sudoku.model.SudokuModel;
 
 public class InverseLexicographicSolver extends LexicographicSolver {
 

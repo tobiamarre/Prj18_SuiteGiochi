@@ -1,26 +1,40 @@
+/* Griglia */
+
+.cell {
+	font-size: calc(1vw + 6px);
+	color: #333;
+	display: grid;
+	grid-template-columns: repeat(9, 3vw);
+	grid-template-rows: repeat(9, 3vw);
+	border-right: 1px solid grey;
+	border-bottom: 1px solid grey;
+}
+
+
+.cell3x3 {
+	font-size: calc( 100% / 3);
+}
+
+
+
 div.selectedCell {
 	background: chartreuse;
-	color: black;
 }
 
 div.cellaFissa {
 	font-weight: bold;
 	background: aliceblue;
-	color: black;
 }
 div.cellaPiena {
 	background: aliceblue;
-	color: black;
 }
 
 div.selectedDigit {
 	background: chartreuse;
-	color: black;
 }
 
 
 div.mistakenCell {
 	background: lightcoral;
-	color: black;	
 }
 
