@@ -29,39 +29,46 @@ public class WordleCtrl {
 		
 		
 		// lettere verdi
-		for (Lettera lettera : tentativo) {
-			if (soluzione.contains(lettera)) {	
-				lettera.colore = VERDE;
-				tentativoColorato.add(lettera);
-			}
-		}
+		soluzione.stream().filter(tentativo::contains).forEach(lettera -> {
+			lettera.colore = VERDE;
+			tentativoColorato.add(lettera);
+		});
+		// old way
+//		for (Lettera lettera : tentativo) {
+//			if (soluzione.contains(lettera)) {	
+//				lettera.colore = VERDE;
+//				tentativoColorato.add(lettera);
+//			}
+//		}
+				
+		soluzione.removeAll(tentativoColorato);
+		tentativo.removeAll(tentativoColorato); // rimuovi lettere già colorate da quelle da aggiungere
 		
 		// lettere gialle
-		tentativo.removeAll(tentativoColorato);
-		soluzione.removeAll(tentativoColorato);
-
-		for (Lettera letteraSoluzione : soluzione) {
-			for (Lettera letteraTentativo : tentativo) {
-				if (letteraSoluzione.carattere.equals(letteraTentativo.carattere) ) {
-					letteraTentativo.colore = GIALLO;
-					tentativoColorato.add(letteraTentativo);
-					tentativo.remove(letteraTentativo);
-					break;
-				}
-			}
-		}
+		soluzione.forEach(letteraSol -> {
+			tentativo.stream().filter(lettera -> lettera.carattere.equals(letteraSol.carattere)).findFirst().ifPresent(lettera -> {
+				lettera.colore = GIALLO;
+				tentativoColorato.add(lettera);
+				tentativo.remove(lettera);
+			});
+		});
+		// old way
+//		for (Lettera letteraSoluzione : soluzione) {
+//			for (Lettera letteraTentativo : tentativo) {
+//				if (letteraSoluzione.carattere.equals(letteraTentativo.carattere) ) {
+//					letteraTentativo.colore = GIALLO;
+//					tentativoColorato.add(letteraTentativo);
+//					tentativo.remove(letteraTentativo);
+//					break;
+//				}
+//			}
+//		}
 		
-		// lettere grigie
 		tentativoColorato.addAll(tentativo);
 		
-		
+		// lettere grigie
 		tentativi.add(tentativoColorato);
-		
-		
-		
-		
-		
-		
+
 	}
 	
 	public static void main(String[] args) {
