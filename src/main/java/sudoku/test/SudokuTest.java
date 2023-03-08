@@ -17,6 +17,7 @@ import sudoku.controller.SudokuGenerator;
 import sudoku.controller.SudokuSolver;
 
 import sudoku.model.SudokuModel;
+import sudoku.model.SudokuPuzzle;
 
 public class SudokuTest {
 
@@ -29,23 +30,10 @@ public class SudokuTest {
 		new int[] { 4,13,19,21,24,25,27,37,41,42,48,51,52,53,54,55,61,71,74,78,79 }
 		);
 		
+		SudokuGenerator sg = new SudokuGenerator();
+		SudokuPuzzle puzzle = sg.getPuzzle();
+		System.out.println(puzzle.getJsonString());
 		
-		LexicographicSolver l = new LexicographicSolver();
-		LexicographicSolver il = new InverseLexicographicSolver();
-		LexicographicSolver r = new RandomSolver();
-//		l.setProblem(m);
-//		il.setProblem(m);
-//		r.setProblem(m);
-//		
-		long start = System.nanoTime();
-		for (int i = 0; i < 1000000; i++) {
-			l.getSolution();
-			
-			
-		}
-		System.out.println((double)(System.nanoTime() - start)/1_000_000_000);
-		
-		System.out.println(l.getSolution());
 		
 		
 //		GENERA GRIGLIE RISOLTE

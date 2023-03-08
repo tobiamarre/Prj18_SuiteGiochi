@@ -2,6 +2,9 @@ package sudoku.model;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class SudokuPuzzle {
 	private SudokuModel problem;
 	private SudokuModel solution;
@@ -24,5 +27,12 @@ public class SudokuPuzzle {
 	public SudokuModel getSolution() {
 		return solution;
 	}	
+	
+	public String getJsonString() {
+		JSONObject out = new JSONObject();
+		out.append("problem", this.problem.getMatrice());
+		out.append("solution", this.solution.getMatrice());
+		return out.toString();
+	}
 	
 }

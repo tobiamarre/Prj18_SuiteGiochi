@@ -16,7 +16,13 @@
         }
 
         /* Griglia */
-
+        .cell div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* border-top: 1px solid grey;
+            border-left: 1px solid grey; */
+        }
         /* .cell {
             font-size: calc(1vw + 6px);
             color: #333;
@@ -38,7 +44,7 @@
         /* fine Griglia */
 
         /* quadrato numero */
-        .cell div {
+        /* .cell div {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -46,7 +52,7 @@
             border-left: 1px solid grey;
         }
 
-        /* gestione dei bordi  */
+        gestione dei bordi 
         .cell div:nth-child(3n) {
             border-right: 1px solid grey;
         }
@@ -69,7 +75,7 @@
 
         .cell div:nth-child(9n) {
             border-right: 0;
-        }
+        } */
 
         footer a {
             display: inline-block;

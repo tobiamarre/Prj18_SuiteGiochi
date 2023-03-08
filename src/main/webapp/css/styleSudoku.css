@@ -1,40 +1,194 @@
-/* Griglia */
 
 .cell {
-	font-size: calc(1vw + 6px);
-	color: #333;
+	
+    --size: max(min(9vw, 6vh), 35px);
+    --thick-border: calc( var(--size) / 30 );
+    --thin-border: calc( var(--size) / 60 );
+	
+    display: grid;
+	grid-template-columns: repeat(9, var(--size));
+	grid-template-rows: repeat(9, var(--size));
+	border: var(--thin-border) solid grey;
+    border-radius: calc( var(--size) / 9 );
+
+    /* text-shadow: 0.02em 0.05em 0.2em rgba(0, 0, 0, 0.30); */
+
+    
+}
+
+.cell .cell-grid {
+    grid-column: 1 / 10;
+    grid-row: 1 / 10;
 	display: grid;
-	grid-template-columns: repeat(9, 3vw);
-	grid-template-rows: repeat(9, 3vw);
-	border-right: 1px solid grey;
-	border-bottom: 1px solid grey;
+	grid-template-columns: repeat(9, 1fr);
+	grid-template-rows: repeat(9, 1fr);
+    width: 100%;
+    height: 100%;
+
+    border-radius: inherit;
+    overflow: hidden;
+
+    justify-content: center;
+    
+    font-size: calc( var(--size) * 10 / 15);
+    color: #333;
+    font-weight: 100;
+    background-color: transparent;
+
 }
 
 
-.cell3x3 {
-	font-size: calc( 100% / 3);
+.cell-grid .box {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    
+    font-size: calc( var(--size) * 10 / 16);
+    color: #333;
+    background-color: transparent;
+
+    z-index: 1;
+}
+.cell-grid .annotations-box .box {
+    font-size: calc( var(--size) * ( 12 / 48 ) * ( 85 / 100 ) );
+    background-color: transparent;
+    text-shadow: none;
 }
 
 
+.cell-grid .annotations-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    width: 85%;
+    height: 85%;
+    margin: auto auto;
+    background-color: transparent;
 
-div.selectedCell {
-	background: chartreuse;
 }
 
-div.cellaFissa {
-	font-weight: bold;
-	background: aliceblue;
-}
-div.cellaPiena {
-	background: aliceblue;
-}
-
-div.selectedDigit {
-	background: chartreuse;
+.cell-grid .box-button {
+    z-index: 4;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
 }
 
+.cell > .cell-borders-vert {
+    grid-column: 4 / 7;
+    grid-row: 1 / 10;
+    border-left: var(--thick-border) solid gray;
+    border-right: var(--thick-border) solid gray;
+    background-color: transparent;
+    z-index: 1;
+}
+.cell > .cell-borders-vert-0 {
+    grid-column: 2 / 3;
+    grid-row: 1 / 10;
+    border-left: var(--thin-border) solid gray;
+    border-right: var(--thin-border) solid gray;
+    background-color: transparent;
+    z-index: 1;
+}
+.cell > .cell-borders-vert-1 {
+    grid-column: 5 / 6;
+    grid-row: 1 / 10;
+    border-left: var(--thin-border) solid gray;
+    border-right: var(--thin-border) solid gray;
+    background-color: transparent;
+    z-index: 1;
+}
+.cell > .cell-borders-vert-2 {
+    grid-column: 8 / 9;
+    grid-row: 1 / 10;
+    border-left: var(--thin-border) solid gray;
+    border-right: var(--thin-border) solid gray;
+    background-color: transparent;
+    z-index: 1;
+}
 
-div.mistakenCell {
+
+.cell > .cell-borders-hori {
+    grid-row: 4 / 7;
+    grid-column: 1 / 10;
+    border-top: var(--thick-border) solid gray;
+    border-bottom: var(--thick-border) solid gray;
+    background-color: transparent;
+    z-index: 1;
+}
+.cell > .cell-borders-hori-0 {
+    grid-row: 2 / 3;
+    grid-column: 1 / 10;
+    border-top: var(--thin-border) solid gray;
+    border-bottom: var(--thin-border) solid gray;
+    background-color: transparent;
+    z-index: 1;
+}
+.cell > .cell-borders-hori-1 {
+    grid-row: 5 / 6;
+    grid-column: 1 / 10;
+    border-top: var(--thin-border) solid gray;
+    border-bottom: var(--thin-border) solid gray;
+    background-color: transparent;
+    z-index: 1;
+}
+.cell > .cell-borders-hori-2 {
+    grid-row: 8 / 9;
+    grid-column: 1 / 10;
+    border-top: var(--thin-border) solid gray;
+    border-bottom: var(--thin-border) solid gray;
+    background-color: transparent;
+    z-index: 1;
+}
+
+#backgrounds .cell-background {
+    width: 100%;
+    height: 100%;
+}
+
+
+.cell .cell-grid .selectedCell {
+	border: 0.1em solid;
+    border-color: cornflowerblue;
+    border-radius: calc( var(--size) / 9 );
+    box-shadow: 0.02em 0.05em 0.2em rgba(0, 0, 0, 0.60);
+    overflow: visible;
+}
+.cell.annot-on .cell-grid .selectedCell {
+    border-color: gold;
+}
+
+.cell .cell-grid .unavailableCell {
+    background: aliceblue;
+    /* height: 100%; */
+    
+}
+.cell .cell-grid .hintCell {
+    
+    font-weight: 500;
+    text-shadow: 0.02em 0.05em 0.15em rgba(0, 0, 0, 0.20);
+}
+
+.cell .cell-grid .cell-background .unavailableCell {
+	background-color: aliceblue;
+    height: 100%;
+
+}
+
+.cell .cell-grid .emphasizedCell {
+	background-color: greenyellow;
+    height: 100%;
+
+}
+
+
+.cell .cell-grid .wrongCell {
 	background: lightcoral;
+    height: 100%;
+
 }
 
+.cell .cell-grid .hidden {
+    visibility: hidden;
+}
