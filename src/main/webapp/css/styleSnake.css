@@ -1,0 +1,44 @@
+  .wall {
+            background: black;
+        }
+        .food {
+            background: red;
+            border: 2px solid black;
+            border-radius: 1em;            
+        }
+        .snake {
+            background: darkgray;
+            border: 2px solid black;
+            border-radius: 1em;
+        }
+        .snake.left {
+            border-left: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .snake.right {
+            border-right: none;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .snake.up {
+            border-top: none;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+        .snake.down {
+            border-bottom: none;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .arena {
+            display: grid;
+            grid-template-columns: repeat(30, 1em);
+            grid-template-rows: repeat(20, 1em);
+            border: 2px solid black;
+            width: fit-content;
+            height: fit-content;
+        }
+        .snake.food {
+            background: gray;
+        }

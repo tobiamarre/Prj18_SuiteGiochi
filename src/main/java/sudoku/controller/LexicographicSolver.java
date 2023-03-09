@@ -97,7 +97,7 @@ public class LexicographicSolver extends SudokuSolver {
 					// annotazioniCelle: abbiamo già tentato queste strade, e siamo dovuti tornare indietro
 					annotazioniCelle[cella];
 			
-			if (annotazione == 511) {
+			if (annotazione == 511) {	// 511 = 0b111111111
 				// se annotazione è 511, allora non è possibile scrivere nulla sulla cella
 				if (celleRiempite.size() == 0) {
 					// se è la prima cella che scriviamo (i.e. per trovare una soluzione
