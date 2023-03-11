@@ -1,13 +1,10 @@
 package sudoku.controller;
 
 
-public class InverseLexicographicSolver extends LexicographicSolver {
-
-	
-	
+public class AntiLexicographicSolver extends LexicographicSolver {
 
 	@Override
-	public int value(int cifra) {	//	0->0, e poi 1->1, 2->4, 3->8, 4->16, 5->32 etc.
+	public int value(int cifra) {	//	0->0, e poi 1->256, 2->128, 3->64, 4->32, 5->16 etc.
 		return (512 >> cifra) & 511;
 	}// 00010 >> 1 -> 00001
 	
@@ -16,12 +13,5 @@ public class InverseLexicographicSolver extends LexicographicSolver {
 		return value == 0 ? 0 : 10 - tableCifre[(0x9AF * value >> 12) & 15];
 	}
 
-	
-	
-
-
-	
-	
-	
 	
 }

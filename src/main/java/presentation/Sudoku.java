@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import sudoku.controller.SudokuGenerator;
+import sudoku.controller.SudokuGenerator2;
 
 @WebServlet("/sudoku")
 public class Sudoku extends HttpServlet {
@@ -19,17 +20,8 @@ public class Sudoku extends HttpServlet {
 		req.getRequestDispatcher("header.jsp").include(req, resp);
 		req.getRequestDispatcher("menu.jsp").include(req, resp);
 		
-		SudokuGenerator ctrl = new SudokuGenerator();
-		req.setAttribute("puzzle", ctrl.getPuzzle());
-		
+		req.setAttribute("puzzle", new SudokuGenerator2().getPuzzle());
 		req.getRequestDispatcher("viewSudoku.jsp").include(req, resp);
-		
-		
-		
-		
-		
-		
-		
 		
 		req.getRequestDispatcher("footer.jsp").include(req, resp);
 	}

@@ -1,9 +1,7 @@
 package sudoku.controller;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Queue;
 
 import sudoku.model.SudokuModel;
 import sudoku.model.SudokuPuzzle;
@@ -17,17 +15,17 @@ public class SudokuGenerator {
 		
 		// remove sevens
 		for (int i = 0; i < 81; i++) {
-			if (problem.getMatrice()[i] == 7) {
-				problem.getMatrice()[i] = 0;
+			if (problem.getMatrix()[i] == 7) {
+				problem.getMatrix()[i] = 0;
 			}
 		}
 		
 		SudokuSolver ls = new LexicographicSolver();
-		SudokuSolver ils = new InverseLexicographicSolver();
+		SudokuSolver ils = new AntiLexicographicSolver();
 		
 		ArrayList<Integer> filledCells = new ArrayList<>();
 		for (int i = 0; i < 81; i++) {
-			if (problem.getMatrice()[i] != 0) {
+			if (problem.getMatrix()[i] != 0) {
 				filledCells.add(i);
 			}
 		}
@@ -38,8 +36,8 @@ public class SudokuGenerator {
 			Collections.shuffle(filledCells);
 			for (int i = 0; i < filledCells.size(); i++) {
 				int cell = filledCells.get(i);
-				int cellValue = problem.getMatrice()[cell];
-				problem.getMatrice()[cell] = 0;
+				int cellValue = problem.getMatrix()[cell];
+				problem.getMatrix()[cell] = 0;
 				
 //				System.out.println("-----------------------------\ncontrollo se questo ha una sol unica:");
 //				System.out.println(problem);
@@ -55,7 +53,7 @@ public class SudokuGenerator {
 					continua = true;
 					break;
 				}
-				problem.getMatrice()[cell] = cellValue;
+				problem.getMatrix()[cell] = cellValue;
 				
 			}
 		}
@@ -63,19 +61,7 @@ public class SudokuGenerator {
 		
 	}
 
-	private static Queue<Integer> filledCells(SudokuModel problem) {
-		Queue<Integer> filledCells = new ArrayDeque<>();
-		for (int i = 0; i < 81; i++) {
-			if (problem.getMatrice()[i] != 0) {				
-				filledCells.add(i);
-			}
-		}
-		return filledCells;
-	}
 	
-	private static int score(SudokuModel problem) {
-		return -filledCells(problem).size();
-	}
 	
 	SudokuModel solution;
 	SudokuModel problem;

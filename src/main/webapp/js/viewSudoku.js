@@ -238,5 +238,5 @@ for (let i = 0; i < 81; i++) {
 
 
 cells.forEach((cell, pos) => {
-	cell.initValue(puzzle.problem[0][pos]);
+	cell.initValue(puzzle.problem[pos]);
 });

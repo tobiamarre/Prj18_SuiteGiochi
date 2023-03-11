@@ -15,7 +15,7 @@ public class SudokuPuzzle {
 		this.solution = solution;
 		this.fixedCells = new ArrayList<>();
 		for (int cell = 0; cell < 81; cell++) {
-			if (problem.getMatrice()[cell] != 0) {
+			if (problem.getMatrix()[cell] != 0) {
 				fixedCells.add(cell);
 			}
 		}
@@ -30,8 +30,8 @@ public class SudokuPuzzle {
 	
 	public String getJsonString() {
 		JSONObject out = new JSONObject();
-		out.append("problem", this.problem.getMatrice());
-		out.append("solution", this.solution.getMatrice());
+		out.put("problem", this.problem.getMatrix());
+		out.put("solution", this.solution.getMatrix());
 		return out.toString();
 	}
 	

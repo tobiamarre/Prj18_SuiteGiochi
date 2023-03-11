@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 import presentation.Sudoku;
-import sudoku.controller.InverseLexicographicSolver;
+import sudoku.controller.AntiLexicographicSolver;
 import sudoku.controller.LexicographicSolver;
 import sudoku.controller.RandomSolver;
 import sudoku.controller.SudokuGenerator;

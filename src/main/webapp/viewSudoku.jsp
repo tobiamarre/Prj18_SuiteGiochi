@@ -38,8 +38,6 @@
         </div>
     </div>
 
-
-
 <script type='text/javascript'>
 var puzzle = <%=((SudokuPuzzle)request.getAttribute("puzzle")).getJsonString()%>;
 </script>

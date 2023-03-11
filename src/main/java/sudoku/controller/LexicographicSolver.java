@@ -15,7 +15,7 @@ public class LexicographicSolver extends SudokuSolver {
 	// value:			potenza di due compresa fra 1 e 2^8, oppure 0. corrisponde alle cifre del model
 	//					0 --> 0; 1 ... 9 --> 2^0 ... 2^8
 	
-	// annotazione:		intero con 9 bit significativi. Ciascun bit indica la disponibilità 
+	// excludedValues:		intero con 9 bit significativi. Ciascun bit indica la disponibilità 
 	//					del corrispondente value in una data cella. Bit acceso corrisponde a value non disponibile
 	
 	protected SudokuModel solution;
@@ -25,80 +25,77 @@ public class LexicographicSolver extends SudokuSolver {
 	protected SimpleStack celleRiempite;
 	protected int[] matrix;							
 	// ogni volta che aggiungiamo una cifra alla griglia
-	// andiamo a segnare il value su annotazioniColonne, annotazioniBlocchi e annotazioniRighe,
+	// andiamo a segnare il value su excludedValuesColonne, excludedValuesBlocchi e excludedValuesRighe,
 	// agli indici corrispondenti alla cella su cui abbiamo scritto
 	
-	// quindi annotazioniColonne/Blocchi/Righe contengono i value non disponibili perché già presenti
+	// quindi excludedValuesColonne/Blocchi/Righe contengono i value non disponibili perché già presenti
 	// nella sezione cui appartiene la cella
 	
 	// i valori di questi tre array sono determinati esclusivamente dai value presenti in matrix
 	
-	// annotazioniCelle invece conserva i value che possiamo 
+	// excludedValuesCelle invece conserva i value che possiamo 
 	// escludere perché li abbiamo provati e recano a configurazioni non risolvibili, e andremo a compilarlo
 	// man mano che traversiamo l'albero dei possibili riempimenti della griglia. Col procedere 
-	// dell'algoritmo annotazioniCelle conterrà sempre più value quand'anche dovessimo tornare alla stessa
+	// dell'algoritmo excludedValuesCelle conterrà sempre più value quand'anche dovessimo tornare alla stessa
 	// configurazione di matrix
 	
-	protected int[] annotazioniColonne;		
-	protected int[] annotazioniBlocchi;
-	protected int[] annotazioniRighe;		
-	protected int[] annotazioniCelle;	
+	protected int[] excludedValuesColonne;		
+	protected int[] excludedValuesBlocchi;
+	protected int[] excludedValuesRighe;		
+	protected int[] excludedValuesCelle;	
 		
-	
-	public void setProblem(SudokuModel newProblem) {
-		problem = newProblem;
-		hasSolution = null;
-	}
 	
 	public LexicographicSolver(SudokuModel problem) {
 		this.problem = problem;
+		init();
 		hasSolution = null;
 	}
 	
 	public LexicographicSolver() {
 		this.problem = new SudokuModel();
+		init();
+		hasSolution = null;
+	}
+	
+	public void setProblem(SudokuModel newProblem) {
+		problem = newProblem;
+		init();
 		hasSolution = null;
 	}
 
 	@Override
 	public boolean hasSolution() {
+		if (hasSolution != null) {
+			return hasSolution();
+		}
 		return this.getSolution() != null;
 	}
 	
 	/**
 	 * Restituisce una soluzione di problem. Precisamente, quella che assegna ad ogni cella
-	 * la cifra più piccola che può ospitare (con precedenza alle celle con indice più alto)
+	 * la cifra più piccola che può ospitare (con precedenza alle celle con indice più basso)
 	 */
 	@Override
-	public SudokuModel getSolution() {
-//		if (hasSolution != null) {
-//			return solution;
-//		}
-
-		init();
-		
-		// dove andremo a segnare le celle che abbiamo riempito
-		
-		// depth first, pre-order traversal dell'albero dei riempimenti
-		// della griglia
+	public SudokuModel getSolution() {		
+		// depth first, pre-order traversal dell'albero dei riempimenti della griglia
 		while (celleVuote.size() > 0) {
 			int cella = celleVuote.pop();
 			
 			// cerchiamo di riempire la cella
-			// ne calcoliamo l'annotazione corrispondente unendo i value esclusi perché già presenti
+			// ne calcoliamo l'excludedValues corrispondente unendo i value esclusi perché già presenti
 			// sulla stessa riga/colonna/blocco
 			int colonna = colonna(cella);
 			int blocco = blocco(cella);
 			int riga = riga(cella);
-			int annotazione = 
-					annotazioniColonne[colonna] | 
-					annotazioniBlocchi[blocco] | 
-					annotazioniRighe[riga] |
-					// annotazioniCelle: abbiamo già tentato queste strade, e siamo dovuti tornare indietro
-					annotazioniCelle[cella];
+			int excludedValues = 
+					excludedValuesColonne[colonna] | 
+					excludedValuesBlocchi[blocco] | 
+					excludedValuesRighe[riga] |
+					// excludedValuesCelle: abbiamo già tentato queste strade, e siamo dovuti tornare indietro
+					excludedValuesCelle[cella];
 			
-			if (annotazione == 511) {	// 511 = 0b111111111
-				// se annotazione è 511, allora non è possibile scrivere nulla sulla cella
+			if (excludedValues == 511) {	// 511 = 0b111111111
+				// se excludedValues è 511, allora non è possibile scrivere nulla sulla cella
 				if (celleRiempite.size() == 0) {
 					// se è la prima cella che scriviamo (i.e. per trovare una soluzione
 					// dovremmo cambiare il problema)
@@ -109,15 +106,15 @@ public class LexicographicSolver extends SudokuSolver {
 				// prendiamo l'ultima cella che avevamo scritto, per cancellarla
 				int cellaPrec = celleRiempite.pop();
 				
-				// aggiorniamo le annotazioni di righe blocchi e colonne
+				// aggiorniamo gli excludedValues di righe blocchi e colonne
 				int ValuePrec = matrix[cellaPrec];
-				annotazioniColonne[colonna(cellaPrec)] ^= ValuePrec;
-				annotazioniBlocchi[blocco(cellaPrec)] ^= ValuePrec;
-				annotazioniRighe[riga(cellaPrec)] ^= ValuePrec;
+				excludedValuesColonne[colonna(cellaPrec)] ^= ValuePrec;
+				excludedValuesBlocchi[blocco(cellaPrec)] ^= ValuePrec;
+				excludedValuesRighe[riga(cellaPrec)] ^= ValuePrec;
 				
-				// l'annotazioneCelle (i value già tentati) della cella che stavamo cercando di riempire perde di significato, 
+				// l'excludedValuesCelle (i value già tentati) della cella che stavamo cercando di riempire perde di significato, 
 				// dal momento che cambieremo cellaPrec, che sta nella parte di matrix che la precede (nell'ordine di riempimento)
-				annotazioniCelle[cella] = 0;
+				excludedValuesCelle[cella] = 0;
 				
 				// cancelliamo il value che avevamo scritto
 				// matrix[cellaPrec] = 0;	(in realtà non è necessario farlo davvero: se esiste una soluzione ci scriveremo sopra un altro valore comunque; mentre se non esiste una soluzione non ha importanza cosa ci resta scritto)
@@ -128,17 +125,17 @@ public class LexicographicSolver extends SudokuSolver {
 			}
 			else {
 				// riempiamo la cella dandole la cifra più piccola fra quelle disponibili
-				// (corrispondente al bit OFF meno significativo presente nell'annotazione)
-				int value = unValueAmmissibile(annotazione);
+				// (corrispondente al bit OFF meno significativo presente nell'excludedValues)
+				int value = unValueAmmissibile(excludedValues);
 				matrix[cella] = value;
 				
 				// segniamo sulla sua colonna/riga/blocco
-				annotazioniColonne[colonna] ^= value;
-				annotazioniBlocchi[blocco] ^= value;
-				annotazioniRighe[riga] ^= value;
+				excludedValuesColonne[colonna] ^= value;
+				excludedValuesBlocchi[blocco] ^= value;
+				excludedValuesRighe[riga] ^= value;
 				
 				// segniamo che abbiamo tentato questa strada, nel caso dovessimo tornare indietro
-				annotazioniCelle[cella] ^= value;
+				excludedValuesCelle[cella] ^= value;
 				
 				// segniamo che abbiamo riempito questa cella
 				celleRiempite.add(cella);
@@ -152,19 +149,19 @@ public class LexicographicSolver extends SudokuSolver {
 
 	protected void init() {
 		
-		annotazioniColonne = new int[9];
-		annotazioniBlocchi = new int[9];
-		annotazioniRighe = new int[9];	
-		annotazioniCelle = new int[81];	
+		excludedValuesColonne = new int[9];
+		excludedValuesBlocchi = new int[9];
+		excludedValuesRighe = new int[9];	
+		excludedValuesCelle = new int[81];	
 		celleVuote = new SimpleStack(81);
-		matrix = problem.getMatrice().clone();
+		matrix = problem.getMatrix().clone();
 		
 		for (int cella = 80; cella >= 0; cella--) {
 			int value = value(matrix[cella]);
 			
-			annotazioniColonne[colonna(cella)] |= value;
-			annotazioniBlocchi[blocco(cella)] |= value;
-			annotazioniRighe[riga(cella)] |= value;
+			excludedValuesColonne[colonna(cella)] |= value;
+			excludedValuesBlocchi[blocco(cella)] |= value;
+			excludedValuesRighe[riga(cella)] |= value;
 			
 			if (value == 0) {
 				celleVuote.add(cella);
@@ -203,19 +200,8 @@ public class LexicographicSolver extends SudokuSolver {
 	static int riga(int cella) {
 		return cella / 9; 
 	}
-	
-	int unValueAmmissibile(int annotazione) { // bit OFF meno significativo 
-		return annotazione+1 & ~annotazione;
+	int unValueAmmissibile(int excludedValues) { // bit OFF meno significativo 
+		return excludedValues+1 & ~excludedValues;
 	}
-//	int[] primoValueDisponibile;
-//	{
-//		primoValueDisponibile = new int[512];
-//		for (int annotazione = 0; annotazione < 512; annotazione++) {
-//			primoValueDisponibile[annotazione] = primoValueDisponibile(annotazione);
-//		}
-//	}
-	
-	
-	
 	
 }

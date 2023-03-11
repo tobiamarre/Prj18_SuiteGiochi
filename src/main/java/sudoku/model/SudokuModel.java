@@ -18,7 +18,7 @@ public class SudokuModel {
 		}
 	}
 	
-	public int[] getMatrice() {
+	public int[] getMatrix() {
 		return matrice;
 	}
 	

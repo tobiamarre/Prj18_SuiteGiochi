@@ -2,19 +2,9 @@ package sudoku.controller;
 
 import java.util.Random;
 
-import sudoku.model.SudokuModel;
-
 public class RandomSolver extends LexicographicSolver {
 
 	Random r = new Random();
-	
-	public RandomSolver(SudokuModel problem) {
-		this.problem = problem;
-	}
-	
-	public RandomSolver() {
-		this.problem = new SudokuModel();
-	}
 
 	@Override
 	int unValueAmmissibile(int annotazione) {
