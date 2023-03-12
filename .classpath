@@ -15,5 +15,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="lib/gson-2.10.1-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/json-20230227.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/json-20230227.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
